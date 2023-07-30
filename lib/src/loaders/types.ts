@@ -1,4 +1,4 @@
 export type IncrementalConfigLoader = {
-    type: string,
-    load: () => Record<string, unknown>;
-}
+  type: string;
+  load: () => Record<string, unknown>;
+};
