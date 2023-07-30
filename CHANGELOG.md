@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.4](https://github.com/nana-io/phantom-zone/compare/v0.4.3...v0.4.4) (2021-09-28)
+
+
+### Features
+
+* update dependency zod 3.9.1 -> 3.9.4 ([e70c8b4](https://github.com/nana-io/phantom-zone/commit/e70c8b4f49c6f9956507073533b193c32d2304f5))
+
 ### [0.4.3](https://github.com/nana-io/phantom-zone/compare/v0.4.2...v0.4.3) (2021-09-26)
 
 
