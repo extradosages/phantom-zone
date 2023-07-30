@@ -2,7 +2,8 @@
 
 ROOT=$(git rev-parse --show-toplevel)
 
-echo "Installing git hooks"
+echo "Setting up repository"
 
 cd $ROOT
+npm i
 npx husky install

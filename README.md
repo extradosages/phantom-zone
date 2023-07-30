@@ -119,6 +119,10 @@ type Assertion = (typeof config) extends {
 
 This repository comes with a containerized development environment for vscode. If you are using vscode, consider developing in this container to standardize the development experience. See [this page](https://code.visualstudio.com/docs/remote/remote-overview) for an overview of remote development. To use the environment, install the `Remote - Containers` vscode extension, open the command palette (usually `Ctrl-Shift-P`), and execute `Remote-Containers: Reopen in Container`.
 
+### Local set-up
+
+If this repo has been freshly cloned, it has to be set-up. Right now, set-up consists of installing git hooks and dependencies for commit linting. To accomplish this, run `./dev set-up` in the repository root. If you don't do this I will know and I will block your PRs on code review.
+
 ### Commit-linting
 
 Commits are linted by [commitlint](https://github.com/conventional-changelog/commitlint). There are facilities in place that will block commits locally if they do not pass linting. I value the experience of finding structure and detail in a commit history upon review. I also value the having the ability to automatically generate changelogs on release when our commits are structured.
