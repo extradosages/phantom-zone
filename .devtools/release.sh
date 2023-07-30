@@ -2,5 +2,5 @@
 ROOT=$(git rev-parse --show-toplevel)
 
 cd $ROOT
-echo "Using standard-version version $(npx standard-version --verions)"
+echo "Using standard-version version $(npx standard-version --version)"
 npx standard-version -a
