@@ -1,6 +1,6 @@
 {
   "name": "@nanaio/phantom-zone",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A convict-zod bridge for configuration",
   "dependencies": {
     "convict": "^6.1.0",
