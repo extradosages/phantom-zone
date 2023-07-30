@@ -1,3 +1,7 @@
+networks:
+  phantom-zone:
+    name: nana.phantom-zone.net
+
 services:
   vscode:
     build:
@@ -5,6 +9,8 @@ services:
       dockerfile: Dockerfile
     container_name: nana.phantom-zone.vscode
     image: nana/phantom-zone/vscode
+    networks:
+      - phantom-zone 
     volumes:
       - type: bind
         source: ..
