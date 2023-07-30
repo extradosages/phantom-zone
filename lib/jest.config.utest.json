@@ -1,6 +1,0 @@
-{
-  "displayName": "Unit Tests",
-  "preset": "ts-jest",
-  "testEnvironment": "node",
-  "testRegex": "utest\\.ts$"
-}
