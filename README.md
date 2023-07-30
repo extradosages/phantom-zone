@@ -132,7 +132,7 @@ api:
     key: 'ak.n7643DSasd83lkjgkmnn7643DSasd83lkjgkmn'
 ```
 
-And we set the environment variable `SERVER_ADDRESS=0.0.0.0`, then the assertion config value will be:
+And we set the environment variable `SERVER_ADDRESS=0.0.0.0`, then the following test assertion will pass:
 ```
 expect(config).toStrictEqual({
   api: {
