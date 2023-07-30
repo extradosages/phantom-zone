@@ -1,6 +1,6 @@
 {
   "name": "@nanaio/phantom-zone",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Type-safe config loading with zod",
   "dependencies": {
     "js-yaml": "^4.1.0",
