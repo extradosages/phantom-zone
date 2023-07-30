@@ -7,7 +7,7 @@ export type EnvSpec = {
   default: undefined;
 };
 
-export type Parser<T> = z.ZodType<T, {}, string>;
+export type Parser<T> = { _output: T, _input: string };
 
 export type ConfigVar<T> = {
   envSpec: EnvSpec;
