@@ -1,9 +1,3 @@
 {
-    "eslint.alwaysShowStatus": true,
-    "eslint.debug": true,
-    "eslint.workingDirectories": [
-        { "directory": "/mnt/lib", "changeProcessCWD": true }
-    ],
-    "prettier.configPath": "/mnt/lib/.prettierrc.json",
-    "prettier.enableDebugLogs": true
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

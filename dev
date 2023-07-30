@@ -1,7 +1,53 @@
 #!/bin/bash
 ROOT=$(git rev-parse --show-toplevel)
 
-SUB_CMD_SRC=$1.sh
+RC_PATH=$ROOT/.devrc
+
+if [ -f $RC_PATH ]
+then
+    # Create a grep filter for rc lines which would override env values
+    ENV_VAR_NAMES=$(env | cut -d = -f1)
+    ENV_VAR_OVERRIDE_FILTER=$(
+        echo $ENV_VAR_NAMES \
+            | sed 's/\([A-Z_]*\)/^\1=/g' \
+            | tr ' ' '|'
+    )
+
+    # Filter out lines starting with `#`
+    # Filter out lines consisting of only whitespace
+    # Filter out lines that override env vars
+    RC_CONTENTS=$(
+        cat $RC_PATH \
+        | grep --invert-match '^#' \
+        | grep --invert-match '^[[:space:]]*$' \
+        | grep --invert-match --extended-regexp "$ENV_VAR_OVERRIDE_FILTER"
+    )
+
+    if [ ! -z "$RC_CONTENTS" ]
+    then
+        # Load the `.devrc`
+        export $(echo $RC_CONTENTS | xargs)
+        
+        if [ $? -eq 1 ]
+        then
+          echo '`.devrc` has lines which are not `VAR=value` pairs, comments, or empty; aborting'
+          exit 1
+        fi
+    fi
+fi
+
+# Locate the command
+DEFAULT_CMD="help.sh"
+
+if [ ! -z "$1" ]
+then
+    SUB_CMD_SRC="${1}.sh"
+else
+    SUB_CMD_SRC="${DEFAULT_CMD}"
+fi
+
+# Shift to pass arguments
 shift
 
+# Execute the command
 bash $ROOT/.devtools/$SUB_CMD_SRC $@

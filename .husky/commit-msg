@@ -1,6 +1,0 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-ROOT=$(git rev-parse --show-toplevel)
-
-$ROOT/dev lint/commits --edit $1
