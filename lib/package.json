@@ -1,14 +1,12 @@
 {
   "name": "@nanaio/phantom-zone",
   "version": "0.2.0",
-  "description": "A convict-zod bridge for configuration",
+  "description": "A configuration loading library using zod",
   "dependencies": {
-    "convict": "^6.1.0",
     "js-yaml": "^4.1.0",
-    "zod": "^3.5.1"
+    "zod": "^3.7.1"
   },
   "devDependencies": {
-    "@types/convict": "^6.0.2",
     "@types/jest": "^26.0.24",
     "@types/js-yaml": "^4.0.1",
     "jest": "^27.0.6",
