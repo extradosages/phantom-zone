@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import { load as yamlStringToObject } from "js-yaml";
 import { z } from "zod";
 
@@ -17,9 +17,16 @@ import { IncrementalConfigLoader } from "./types";
  */
 export const yamlFileLoader = (
   parser: z.AnyZodObject,
-  filePath: string
+  filePath: string,
+  throwIfMissing: boolean = true,
 ): IncrementalConfigLoader => {
   const load = (): Record<string, unknown> => {
+    // Check if the file is present if we are willing to ignore missing files
+    if (!throwIfMissing && !existsSync(filePath)) {
+      console.warn(`Requested config yaml not found at ${filePath}; defaulting to empty config`)
+      return {};
+    };
+
     // Load the object into memory
     const yamlString = String(readFileSync(filePath));
     const value = yamlStringToObject(yamlString);
