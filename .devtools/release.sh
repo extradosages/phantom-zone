@@ -4,4 +4,4 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 BASE_DIR=$(dirname $DIR)
 
-cd $BASE_DIR && npx standard-version -a -f
+cd $BASE_DIR && npx standard-version -a

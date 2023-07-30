@@ -7,6 +7,17 @@ import { Config, Parser, Schema, SubSchema, ConfigVar } from './types';
 // Teach convict how to load a yaml file
 convict.addParser({ extension: ['yaml'], parse: yaml.load });
 
+/**
+ * Define a variable to inject at runtime.
+ * 
+ * Describe the variable, set an environment variable to source it from, and set a parser to run
+ * it through.
+ * 
+ * @param doc 
+ * @param env 
+ * @param parser 
+ * @returns 
+ */
 export const configVar = <T>(doc: string, env: string, parser: Parser<T>): ConfigVar<T> => ({
   _type: 'ConfigVar',
   envSpec: {
@@ -65,6 +76,14 @@ const depth = <T extends Schema>(schema: T, currDepth = 0): number => {
   return layer;
 }
 
+/**
+ * Collect configuration variables from files and the environment at runtime, according to a
+ * schema.
+ * 
+ * @param schema 
+ * @param filePathSequence 
+ * @returns 
+ */
 export const project = <T extends Schema>(schema: T, filePathSequence: string[]): Config<T>  => {
   const schemaDepth = depth(schema);
   if (schemaDepth > maxDepth) {
@@ -76,15 +95,14 @@ export const project = <T extends Schema>(schema: T, filePathSequence: string[])
   // Load config from environment using schema
   const loader = convict(schemaToConvict(schema));
 
-  for (const path in filePathSequence) {
+  for (const path of filePathSequence) {
     try {
-      // Load ad-hoc config
       loader.loadFile(path);
-    } catch {
-      // Do nothing
+    } catch (err) {
+      console.warn(err);
     }
   }
   
-  // Parser loaded config with zod
+  // Parse loaded config with zod
   return schemaToZod(schema).parse(loader.getProperties());
 }
