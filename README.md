@@ -112,5 +112,3 @@ type Assertion = (typeof config) extends {
   };
 } ? true : false;
 ```
-
-<img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fgfycat.com%2Fgifs%2Fsearch%2Fphantom%2Bzone&psig=AOvVaw0se8X4LXaL9m--xdEupMFJ&ust=1628810791527000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCLjG3ZePqvICFQAAAAAdAAAAABAI"></img>
