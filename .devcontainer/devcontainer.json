@@ -1,0 +1,11 @@
+{
+  "dockerComposeFile": "./docker-compose.yaml",
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "shd101wyy.markdown-preview-enhanced"
+  ],
+  "name": "phantom-zone",
+  "service": "vscode",
+  "workspaceFolder": "/mnt",
+}

@@ -1,0 +1,22 @@
+{
+    "bumpFiles": [
+        {
+            "filename": "./lib/npm-shrinkwrap.json",
+            "type": "json"
+        },
+        {
+            "filename": "./lib/package.json",
+            "type": "json"
+        }
+    ],
+    "packageFiles":  [
+        {
+            "filename": "./lib/package.json",
+            "type": "json"
+        }
+    ],
+    "scripts": {
+        "prerelease": "./dev release/authenticate && ./dev build/lib",
+        "posttag": "cp CHANGELOG.md lib && cp README.md lib && npm publish lib"
+    }
+}

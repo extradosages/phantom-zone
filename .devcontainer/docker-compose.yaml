@@ -1,0 +1,13 @@
+services:
+  vscode:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nana.phantom-zone.vscode
+    image: nana/phantom-zone/vscode
+    volumes:
+      - type: bind
+        source: ..
+        target: /mnt
+
+version: "3.8"
