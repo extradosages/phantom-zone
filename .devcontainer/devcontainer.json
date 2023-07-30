@@ -6,6 +6,7 @@
     "shd101wyy.markdown-preview-enhanced"
   ],
   "name": "phantom-zone",
+  "remoteUser": "node",
   "service": "vscode",
   "workspaceFolder": "/mnt",
 }
