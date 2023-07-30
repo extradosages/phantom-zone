@@ -5,7 +5,7 @@
   "dependencies": {
     "convict": "^6.1.0",
     "js-yaml": "^4.1.0",
-    "zod": "^3.2.0"
+    "zod": "^3.5.1"
   },
   "devDependencies": {
     "@types/convict": "^6.0.2",
