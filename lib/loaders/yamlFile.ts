@@ -18,14 +18,16 @@ import { IncrementalConfigLoader } from "./types";
 export const yamlFileLoader = (
   parser: z.AnyZodObject,
   filePath: string,
-  throwIfMissing: boolean = true,
+  throwIfMissing: boolean = true
 ): IncrementalConfigLoader => {
   const load = (): Record<string, unknown> => {
     // Check if the file is present if we are willing to ignore missing files
     if (!throwIfMissing && !existsSync(filePath)) {
-      console.warn(`Requested config yaml not found at ${filePath}; defaulting to empty config`)
+      console.warn(
+        `Requested config yaml not found at ${filePath}; defaulting to empty config`
+      );
       return {};
-    };
+    }
 
     // Load the object into memory
     const yamlString = String(readFileSync(filePath));
@@ -35,11 +37,14 @@ export const yamlFileLoader = (
     // something is missing; that's at the end of the parsing sequence
     const parsed = parser.deepPartial().safeParse(value);
     if (!parsed.success) {
-      throw new ErrorWithContext("Issue sourcing config from yaml file", {
-        filePath,
-        value,
-        issues: parsed.error.issues,
-      });
+      throw new ErrorWithContext(
+        {
+          filePath,
+          value,
+          issues: parsed.error.issues,
+        },
+        "Issue sourcing config from yaml file"
+      );
     }
 
     return parsed.data;

@@ -6,14 +6,9 @@ export class ErrorWithContext extends Error {
 
   hints?: string[];
 
-  constructor(
-    message?: string,
-    context?: Record<string, unknown>,
-    hints?: string[]
-  ) {
+  constructor(context: Record<string, unknown>, message: string = "") {
     super(message);
     this.context = context;
-    this.hints = hints;
   }
 }
 
@@ -25,9 +20,8 @@ export class ErrorWithContext extends Error {
  * @param hints
  */
 export const error = (
-  message?: string,
-  context?: Record<string, unknown>,
-  hints?: string[]
+  context: Record<string, unknown>,
+  message?: string
 ): never => {
-  throw new ErrorWithContext(message, context, hints);
+  throw new ErrorWithContext(context, message);
 };

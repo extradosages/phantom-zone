@@ -1,4 +1,4 @@
-import _ = require("lodash");
+import _ from "lodash";
 import { z } from "zod";
 
 import { ErrorWithContext } from "./errors";
@@ -23,10 +23,13 @@ export const project = <T extends z.AnyZodObject>(
 
   const parsed = parser.safeParse(value);
   if (!parsed.success) {
-    throw new ErrorWithContext("Issue parsing accumulated config", {
-      value,
-      issues: parsed.error.issues,
-    });
+    throw new ErrorWithContext(
+      {
+        value,
+        issues: parsed.error.issues,
+      },
+      "Issue parsing accumulated config"
+    );
   }
   return parsed.data;
 };

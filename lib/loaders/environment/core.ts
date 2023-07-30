@@ -84,11 +84,14 @@ export const environmentLoader = <T extends z.AnyZodObject>(
       // something is missing; that's at the end of the parsing sequence
       const parsed = subParser.optional().safeParse(value);
       if (!parsed.success) {
-        throw new ErrorWithContext("Issue sourcing config from environment", {
-          variableName,
-          value,
-          issues: parsed.error.issues,
-        });
+        throw new ErrorWithContext(
+          {
+            variableName,
+            value,
+            issues: parsed.error.issues,
+          },
+          "Issue sourcing config from environment"
+        );
       }
 
       environment = _.set(environment, path, parsed.data);
