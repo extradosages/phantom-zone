@@ -1,7 +1,6 @@
 #!/bin/bash
+ROOT=$(git rev-parse --show-toplevel)
 
-# https://stackoverflow.com/questions/59895/how-to-get-the-source-directory-of-a-bash-script-from-within-the-script-itself
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-BASE_DIR=$(dirname $DIR)
-
-cd $BASE_DIR && npx standard-version -a
+cd $ROOT
+echo "Using standard-version version $(npx standard-version --verions)"
+npx standard-version -a

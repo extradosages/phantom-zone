@@ -1,9 +1,7 @@
 #!/bin/bash
-
-# https://stackoverflow.com/questions/59895/how-to-get-the-source-directory-of-a-bash-script-from-within-the-script-itself
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+ROOT=$(git rev-parse --show-toplevel)
 
 SUB_CMD_SRC=$1.sh
 shift
 
-bash $DIR/.devtools/$SUB_CMD_SRC $@
+bash $ROOT/.devtools/$SUB_CMD_SRC $@

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Authenticating release"
+
 if [ -z "${NPM_TOKEN}" ]
 then
   npm whoami 2&> /dev/null
