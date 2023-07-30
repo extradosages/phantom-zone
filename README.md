@@ -113,6 +113,46 @@ type Assertion = (typeof config) extends {
 } ? true : false;
 ```
 
+If we have the file `/mnt/app/config.yaml`:
+```
+api:
+  google:
+    key: 'fake'
+logging:
+  level: 'debug'
+server:
+  host: '127.0.0.1'
+  port: 9000
+```
+
+And we have the file `/mnt/app/config.adhoc.yaml`:
+```
+api:
+  google:
+    key: 'ak.n7643DSasd83lkjgkmnn7643DSasd83lkjgkmn'
+```
+
+And we set the environment variable `SERVER_ADDRESS=0.0.0.0`, then the assertion config value will be:
+```
+expect(config).toStrictEqual({
+  api: {
+    google: {
+      // From the file `config.adhoc.yaml`
+      key: 'ak.n7643DSasd83lkjgkmnn7643DSasd83lkjgkmn',
+    },
+  },
+  logging: {
+    // From the file `config.yaml`
+    level: 'debug',
+  },
+  server: {
+    // From the `SERVER_ADDRESS` environment variable
+    host: '0.0.0.0',
+    port: 9000,
+  },
+})
+```
+
 ## Development
 
 ### Development containers
