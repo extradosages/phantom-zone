@@ -4,11 +4,14 @@
   "description": "A configuration loading library using zod",
   "dependencies": {
     "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
     "zod": "^3.7.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
     "@types/js-yaml": "^4.0.1",
+    "@types/lodash": "^4.14.172",
+    "@types/node": "^16.4.13",
     "jest": "^27.0.6",
     "ts-jest": "^27.0.3",
     "typescript": "^4.3.5"

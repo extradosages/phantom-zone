@@ -1,108 +1,26 @@
-import * as convict from 'convict';
-import * as yaml from 'js-yaml';
+import _ = require('lodash');
 import { z } from 'zod';
 
-import { Config, Parser, Schema, SubSchema, ConfigVar } from './types';
-
-// Teach convict how to load a yaml file
-convict.addParser({ extension: ['yaml'], parse: yaml.load });
+import { ErrorWithContext } from './errors';
+import { IncrementalConfigLoader } from './loaders/types';
 
 /**
- * Define a variable to inject at runtime.
+ * Incrementally load config from a sequence of sources, then amalgamate and parse the resulting
+ * data with zod.
  * 
- * Describe the variable, set an environment variable to source it from, and set a parser to run
- * it through.
- * 
- * @param doc 
- * @param env 
  * @param parser 
+ * @param incrementalLoaders 
  * @returns 
  */
-export const configVar = <T>(doc: string, env: string, parser: Parser<T>): ConfigVar<T> => ({
-  _type: 'ConfigVar',
-  envSpec: {
-    default: undefined,
-    doc,
-    env,
-    format: '*',
-  },
-  parser,
-});
-
-// Could've used a zod parser for this
-const isConfigVar = <T>(data: Schema): data is ConfigVar<T> => data?._type === 'ConfigVar';
-
-const schemaToZod = <T extends Schema>(schema: T): z.ZodType<Config<T>> => {
-  let layer: z.ZodRawShape = {};
-  for (const key in schema) {
-    const value = schema[key] as unknown as Schema;
-    
-    if (isConfigVar(value)) {
-      layer[key] = value.parser;
-    } else {
-      layer[key] = schemaToZod(value);
-    }
-  }
-  
-  return z.object(layer) as unknown as Config<T>;
-}
-
-const schemaToConvict = <T extends Schema>(schema: T) => {
-  let layer: Record<string, any> = {};
-  for (const key in schema) {
-    const value = schema[key] as unknown as Schema;
-
-    if (isConfigVar(value)) {
-      layer[key] = value.envSpec;
-    } else {
-      layer[key] = schemaToConvict(value);
-    }
-  }
-  
-  return layer;
-}
-
-const maxDepth = 4;
-
-const depth = <T extends Schema>(schema: T, currDepth = 0): number => {
-  if (isConfigVar(schema)) {
-    return currDepth;
-  }
-  let layer: number = 0;
-  for (const key in schema) {
-    const value = schema[key] as unknown as SubSchema;
-    layer = Math.max(depth(value, currDepth + 1), layer)
-  }
-  return layer;
-}
-
-/**
- * Collect configuration variables from files and the environment at runtime, according to a
- * schema.
- * 
- * @param schema 
- * @param filePathSequence 
- * @returns 
- */
-export const project = <T extends Schema>(schema: T, filePathSequence: string[]): Config<T>  => {
-  const schemaDepth = depth(schema);
-  if (schemaDepth > maxDepth) {
-    throw new Error(`Config schema depth (${schemaDepth}) exceeds maximum depth (${maxDepth}); ` +
-      `type inference may be wrong; adjust schema or submit a PR to the library to increase the ` +
-      `maximum depth`);
+export const project = <T extends z.AnyZodObject>(parser: T, incrementalLoaders: IncrementalConfigLoader[]): z.infer<T> => {
+  let value: Record<string, unknown> = {};
+  for (const loader of incrementalLoaders) {
+    value = _.merge(value, loader.load());
   }
 
-  // Load config from environment using schema
-  const loader = convict(schemaToConvict(schema));
-
-  for (const path of filePathSequence) {
-    try {
-      loader.loadFile(path);
-    } catch (err) {
-      console.warn(err);
-    }
+  const parsed = parser.safeParse(value);
+  if (!parsed.success) {
+    throw new ErrorWithContext('Issue parsing accumulated config', { value, issues: parsed.error.issues });
   }
-  
-  // Parse loaded config with zod
-  return schemaToZod(schema).parse(loader.getProperties());
+  return parsed.data;
 }
