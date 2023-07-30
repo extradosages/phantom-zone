@@ -1,10 +1,14 @@
 # phantom-zone
+
 Type-safe config with zod.
 
 ## Overview
+
 `phantom-zone` is a library for type-safe loading of config values. It leverages the fantastic typescript library zod to bridge static analysis and the runtime with very little code.
 
 Config values can presently be sourced from yaml files and from the process environment.
+
+Curious about the etymology? Consider [this](https://github.com/mozilla/node-convict) and [this](https://github.com/colinhacks/zod).
 
 ## Usage
 
@@ -19,6 +23,7 @@ For this tutorial we'll pretend we're working on an application called `google-g
 To define the shape of our configuration (and the static type with which it will be passed around the application) we'll use a zod parser. In `google-gateway` we'll pretend that we're configuring the server host, logging level, and google api key.
 
 In `/mnt/app/src/config/parser.ts`:
+
 ```
 import { z } from 'zod';
 
@@ -60,11 +65,12 @@ We'll have this application attempt to load its cofiguration from a file of defa
 
 The `yamlFileLoader` will try to load config from a yaml file. All that's required to configure it is a path to the file.
 
-The `environmentLoader` will try to load config from the environment. By default it attempts to load a config variable with a given path in the parser by joining the path into ALL_CAPS case, e.g. `api.google.key` -> `API_GOOGLE_KEY`. This transformation is actually typeable in typescript 4.3.5; one can determine the union type of allowable environment variable names from a parser statically! `phantom-zone` does this. Leveraging this power, if one wishes to override the variable from which to source a config variable, one can pass a record which takes the default variable name to the desired one. 
+The `environmentLoader` will try to load config from the environment. By default it attempts to load a config variable with a given path in the parser by joining the path into ALL_CAPS case, e.g. `api.google.key` -> `API_GOOGLE_KEY`. This transformation is actually typeable in typescript 4.3.5; one can determine the union type of allowable environment variable names from a parser statically! `phantom-zone` does this. Leveraging this power, if one wishes to override the variable from which to source a config variable, one can pass a record which takes the default variable name to the desired one.
 
-In `/mnt/app/src/config/loaders.ts`:
+For example, in `/mnt/app/src/config/loaders.ts`:
+
 ```
-import { environmentLoader, yamlFileLoader } from '@nanaio/phantom-zone/dist/loaders';
+import { environmentLoader, yamlFileLoader } from 'phantom-zone';
 
 import { parser } from './parser.ts';
 
@@ -85,9 +91,10 @@ export const loaders = [defaults, localOverride, lastWord];
 
 Loading the config can then be accomplished by invoking the `project` function, the core api of the package.
 
-In `/mnt/app/src/config/core.ts`:
+For example, in `/mnt/app/src/config/core.ts`:
+
 ```
-import { project } from '@nanaio/phantom-zone/dist';
+import { project } from 'phantom-zone';
 
 import { loaders } from './loaders';
 import { parser } from './parser';
@@ -96,8 +103,9 @@ export const config = project(parser, loaders);
 ```
 
 The config will be typed, and the following type "assertion" will be `true`:
+
 ```
-type Assertion = (typeof config) extends { 
+type Assertion = (typeof config) extends {
   api: {
     google: {
       key: string;
@@ -114,6 +122,7 @@ type Assertion = (typeof config) extends {
 ```
 
 If we have the file `/mnt/app/config.yaml`:
+
 ```
 api:
   google:
@@ -126,6 +135,7 @@ server:
 ```
 
 And we have the file `/mnt/app/config.adhoc.yaml`:
+
 ```
 api:
   google:
@@ -133,6 +143,7 @@ api:
 ```
 
 And we set the environment variable `SERVER_ADDRESS=0.0.0.0`, then the following test assertion will pass:
+
 ```
 expect(config).toStrictEqual({
   api: {
@@ -159,14 +170,10 @@ expect(config).toStrictEqual({
 
 This repository comes with a containerized development environment for vscode. If you are using vscode, consider developing in this container to standardize the development experience. See [this page](https://code.visualstudio.com/docs/remote/remote-overview) for an overview of remote development. To use the environment, install the `Remote - Containers` vscode extension, open the command palette (usually `Ctrl-Shift-P`), and execute `Remote-Containers: Reopen in Container`.
 
-### Local set-up
-
-If this repo has been freshly cloned, it has to be set-up. Right now, set-up consists of installing git hooks and dependencies for commit linting. To accomplish this, run `./dev set-up` in the repository root. If you don't do this I will know and I will block your PRs on code review.
-
 ### Commit-linting
 
 Commits are linted by [commitlint](https://github.com/conventional-changelog/commitlint). There are facilities in place that will block commits locally if they do not pass linting. I value the experience of finding structure and detail in a commit history upon review. I also value the having the ability to automatically generate changelogs on release when our commits are structured.
 
 ### Publishing releases
 
-I intend the release process for this library to be managed by the [standard-version](https://github.com/conventional-changelog/standard-version) tool. To invoke the release, run `./dev release` in the root of the repository.%    
+I intend the release process for this library to be managed by the [standard-version](https://github.com/conventional-changelog/standard-version) tool. To invoke the release, run `./dev release` in the root of the repository.%
