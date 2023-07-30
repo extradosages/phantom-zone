@@ -112,3 +112,17 @@ type Assertion = (typeof config) extends {
   };
 } ? true : false;
 ```
+
+## Development
+
+### Development containers
+
+This repository comes with a containerized development environment for vscode. If you are using vscode, consider developing in this container to standardize the development experience. See [this page](https://code.visualstudio.com/docs/remote/remote-overview) for an overview of remote development. To use the environment, install the `Remote - Containers` vscode extension, open the command palette (usually `Ctrl-Shift-P`), and execute `Remote-Containers: Reopen in Container`.
+
+### Commit-linting
+
+Commits are linted by [commitlint](https://github.com/conventional-changelog/commitlint). There are facilities in place that will block commits locally if they do not pass linting. I value the experience of finding structure and detail in a commit history upon review. I also value the having the ability to automatically generate changelogs on release when our commits are structured.
+
+### Publishing releases
+
+I intend the release process for this library to be managed by the [standard-version](https://github.com/conventional-changelog/standard-version) tool. To invoke the release, run `./dev release` in the root of the repository.%    
