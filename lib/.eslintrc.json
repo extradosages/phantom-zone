@@ -1,0 +1,35 @@
+{
+    "extends": ["airbnb-typescript-prettier"],
+    "rules": {
+        "@typescript-eslint/no-loop-func": 0,
+        "@typescript-eslint/naming-convention": [ 
+            2, 
+            { 
+                "format": [ "strictCamelCase" ], 
+                "leadingUnderscore": "allow",
+                "selector": [ "variableLike" ],
+                "trailingUnderscore": "allow"
+            },
+            {
+                "format": [ "PascalCase" ],
+                "selector": [ "typeLike" ],
+                "trailingUnderscore": "allow"
+            }
+        ],
+        "@typescript-eslint/no-useless-constructor": 0,
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" ,"varsIgnorePattern": "^_" }],
+        "curly": [2, "all"],
+        "import/extensions": 0,
+        // We can rely on tsc for this, especially since we use import aliasing
+        "import/no-unresolved": 0,
+        "import/prefer-default-export": 0,
+        "max-classes-per-file": 0,
+        "no-await-in-loop": 0,
+        "no-constant-condition": 0,
+        "no-restricted-syntax": 0,
+        "no-underscore-dangle": 0,
+        // Superseded by @typescript-eslint/no-unused-vars
+        "no-unused-vars": 0,
+        "no-useless-constructor": 0
+    }
+}
